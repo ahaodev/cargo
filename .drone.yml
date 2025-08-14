@@ -6,6 +6,10 @@ trigger:
   branch:
     - dev
     - master
+
+node:
+  runner: msa2
+
 steps:
   - name: build
     image: ubuntu:16.04
