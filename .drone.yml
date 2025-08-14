@@ -8,7 +8,7 @@ trigger:
     - master
 
 node:
-  runner: msa2
+  runner: n305
 
 steps:
   - name: build
