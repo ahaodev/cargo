@@ -27,7 +27,6 @@ steps:
       - export PATH=$PATH:/go/bin/
       - export PATH=$PATH:/gcc/bin/
       - chmod +x build.sh
-      - chmod +x updav
       - arm-linux-gnueabihf-gcc --version
       - go version
       - go env -w GONOSUMDB=*
@@ -35,8 +34,6 @@ steps:
 #      - sleep 1000
       - ./build.sh
       - tar -cvf cargo.tar runner upgrade.sh config.yml
-      - version=$(head -n 3 config/version.go | tail -n 1 | cut -d '"' -f 2)
-      - echo $version
       #- ./updav -u http://192.168.8.6:8081 -a dev -p Az*29!#^1Nan -f cargo.tar -r /uchi/公交车/$version
   - name: scp-files
     image: appleboy/drone-scp:1.6
