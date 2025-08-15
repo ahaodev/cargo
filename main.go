@@ -28,7 +28,7 @@ var sleepTime = 10 * time.Second
 // main  -lpos -lm -lpng -lfontconfig -lfreetype -liconv
 func main() {
 	err := sentry.Init(sentry.ClientOptions{
-		Dsn: "https://626c099b135d7682a75e78e8b9342e29@o4508631282155520.ingest.us.sentry.io/4509071466102784",
+		Dsn: "https://23d733d9dd54f428ca284df0b2b544dd@sentry.ucorg.com/10",
 	})
 	if err != nil {
 		log.Fatalf("sentry.Init: %s", err)
