@@ -37,7 +37,7 @@ steps:
       - tar -cvf cargo.tar runner upgrade.sh config.yml
       - version=$(head -n 3 config/version.go | tail -n 1 | cut -d '"' -f 2)
       - echo $version
-      - ./updav -u http://192.168.8.6:8081 -a dev -p Az*29!#^1Nan -f cargo.tar -r /uchi/公交车/$version
+      #- ./updav -u http://192.168.8.6:8081 -a dev -p Az*29!#^1Nan -f cargo.tar -r /uchi/公交车/$version
   - name: scp-files
     image: appleboy/drone-scp:1.6
     settings:
@@ -62,7 +62,22 @@ steps:
       script:
         - echo "login success"
         - /sbin/reboot
-
+  - name: upload-s3
+    image: minio/mc:RELEASE.2024-01-16T16-06-34Z
+    environment:
+      ADDRESS: http://192.168.99.17:9000
+      ACCESS_KEY:
+        from_secret: MINIO_ACCESS_KEY
+      SECRET_KEY:
+        from_secret: MINIO_SECRET_KEY
+    commands:
+      - version=$(head -n 3 config/version.go | tail -n 1 | cut -d '"' -f 2)
+      - echo $version
+      - mc config host add mio $ADDRESS $ACCESS_KEY $SECRET_KEY
+      - dir="mio/uchi/公交车/${DRONE_SOURCE_BRANCH}/$version"
+      - mc stat "$dir" > /dev/null 2>&1 || mc mb "$dir"
+      - mc cp cargo.tar "$dir"
+      - mc cp CHANGES.md "$dir"
 volumes:
   - name: gcc
     host:
