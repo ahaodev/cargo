@@ -106,7 +106,7 @@ func main() {
 				}
 				// 清除当天的计数,显示
 				showNormal(0)
-				decaros.APlay("A")
+				decaros.APlay("qccg")
 				continue
 			}
 			resp, err := api.CheckTicket(cMsg.Content, api.ProtoQr)
