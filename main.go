@@ -102,8 +102,9 @@ func main() {
 			if isDeviceQR {
 				err = internal.ClearPassedCount()
 				if err != nil {
-					showNormal(0)
+					pkg.Log.Println(err.Error())
 				}
+				showNormal(0)
 				// 清除当天的计数,显示
 				return
 			}
