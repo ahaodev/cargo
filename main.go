@@ -104,8 +104,8 @@ func main() {
 				if err != nil {
 					pkg.Log.Println(err.Error())
 				}
-				showNormal(0)
 				// 清除当天的计数,显示
+				showNormal(0)
 				continue
 			}
 			resp, err := api.CheckTicket(cMsg.Content, api.ProtoQr)
