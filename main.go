@@ -106,7 +106,7 @@ func main() {
 				}
 				showNormal(0)
 				// 清除当天的计数,显示
-				return
+				continue
 			}
 			resp, err := api.CheckTicket(cMsg.Content, api.ProtoQr)
 			parseResp(err, resp)
