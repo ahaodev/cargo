@@ -97,6 +97,16 @@ func main() {
 			resp, err := api.CheckTicket(cMsg.Content, api.ProtoIC)
 			parseResp(err, resp)
 		case msg.QRCODE:
+			// 判断是否是设备操作的二维码
+			isDeviceQR := internal.IsDeviceQRString(cMsg.Content)
+			if isDeviceQR {
+				err = internal.ClearPassedCount()
+				if err != nil {
+					showNormal(0)
+				}
+				// 清除当天的计数,显示
+				return
+			}
 			resp, err := api.CheckTicket(cMsg.Content, api.ProtoQr)
 			parseResp(err, resp)
 		case msg.ID_CARD:

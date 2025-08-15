@@ -91,3 +91,25 @@ func WritePassedCount() (int, error) {
 	err = ioutil.WriteFile(todayFileName(), []byte(content), 0644)
 	return number, err
 }
+
+// ClearPassedCount 清除当前日期文件的数值
+func ClearPassedCount() error {
+	pkg.Log.Println("ClearPassedCount")
+	// 如果文件不存在，则创建文件
+	if _, err := os.Stat(todayFileName()); os.IsNotExist(err) {
+		// 如果文件不存在，创建一个新文件并写入内容
+		err := createNewFile(todayFileName())
+		if err != nil {
+			fmt.Println("创建文件失败:", err)
+			return err
+		}
+		fmt.Println("新文件已创建")
+	} else if err != nil {
+		// 如果发生其他错误，输出错误信息
+		fmt.Println("获取文件信息失败:", err)
+		return err
+	} else {
+		fmt.Println("文件已存在")
+	}
+	return ioutil.WriteFile(todayFileName(), []byte("0"), 0644)
+}
