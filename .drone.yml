@@ -74,7 +74,7 @@ steps:
       - version=$(head -n 3 config/version.go | tail -n 1 | cut -d '"' -f 2)
       - echo $version
       - dir="mio/uchi/公交车/${DRONE_SOURCE_BRANCH}/$version"
-      - changesDir="mio/uchi/公交车/"
+      - changesDir="mio/uchi/公交车/${DRONE_SOURCE_BRANCH}"
       - mc config host add mio $ADDRESS $ACCESS_KEY $SECRET_KEY
       - mc stat "$dir" > /dev/null 2>&1 || mc mb "$dir"
       - mc cp cargo.tar "$dir"
