@@ -14,8 +14,7 @@ Length	1 字节	内容长度 (0-255)
 Content	0-255字节	UTF-8 编码的内容数据
 CRC8	1 字节	CRC8-CCITT 校验和
 
-示例: a8 02 00 41
-示例: a8 03 00 26
+示例: A8020033
 */
 
 const (
@@ -114,27 +113,20 @@ func isTypeFrame(frame []byte, wantType byte) bool {
 	return crc8(frame[:len(frame)-1]) == frame[len(frame)-1]
 }
 
-// CRC8-CCITT (poly 0x31, init 0x00) 查表实现
-var crc8Table = func() [256]byte {
-	var t [256]byte
-	for i := 0; i < 256; i++ {
-		crc := byte(i)
-		for b := 0; b < 8; b++ {
-			if crc&0x80 != 0 {
-				crc = (crc << 1) ^ 0x31
-			} else {
-				crc <<= 1
-			}
-		}
-		t[i] = crc
-	}
-	return t
-}()
-
+// CRC8 (poly 0x07, init 0x00) 与JavaScript版本对齐
 func crc8(data []byte) byte {
 	var crc byte = 0x00
-	for _, v := range data {
-		crc = crc8Table[crc^v]
+	polynomial := byte(0x07)
+
+	for _, b := range data {
+		crc ^= b
+		for bit := 0; bit < 8; bit++ {
+			if crc&0x80 != 0 {
+				crc = ((crc << 1) ^ polynomial) & 0xFF
+			} else {
+				crc = (crc << 1) & 0xFF
+			}
+		}
 	}
 	return crc
 }
